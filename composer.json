@@ -3,14 +3,16 @@
     "description": "Blade directive to cache rendered partials in laravel",
     "keywords": [
         "spatie",
-        "laravel-partialcache"
+        "cache",
+        "partial",
+        "view"
     ],
     "homepage": "https://github.com/spatie/laravel-partialcache",
     "license": "MIT",
     "authors": [
         {
             "name": "Sebastian De Deyne",
-            "email": "sebastia@spatie.be",
+            "email": "sebastian@spatie.be",
             "homepage": "https://spatie.be",
             "role": "Developer"
         }
