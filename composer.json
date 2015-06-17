@@ -1,16 +1,16 @@
 {
-    "name": "spatie/:package_name",
-    "description": ":package_description",
+    "name": "spatie/laravel-partialcache",
+    "description": "Blade directive to cache rendered partials in laravel",
     "keywords": [
-        "league",
-        ":package_name"
+        "spatie",
+        "laravel-partialcache"
     ],
-    "homepage": "https://github.com/spatie/:package_name",
+    "homepage": "https://github.com/spatie/laravel-partialcache",
     "license": "MIT",
     "authors": [
         {
-            "name": ":author_name",
-            "email": ":author_email",
+            "name": "Sebastian De Deyne",
+            "email": "sebastia@spatie.be",
             "homepage": "https://spatie.be",
             "role": "Developer"
         }
@@ -24,15 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Spatie\\Skeleton\\": "src"
+            "Spatie\\PartialCache\\": "src"
         }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Spatie\\Skeleton\\Test\\": "tests"
-        }
-    },
-    "scripts": {
-        "test": "phpunit"
     }
 }
