@@ -1,20 +1,6 @@
 # Changelog
 
-All Notable changes to `:package_name` will be documented in this file
+All Notable changes to `spatie/laravel-partialcache` will be documented in this file
 
-## NEXT - YYYY-MM-DD
-
-### Added
-- Nothing
-
-### Deprecated
-- Nothing
-
-### Fixed
-- Nothing
-
-### Removed
-- Nothing
-
-### Security
-- Nothing
+## 1.0
+- First release
