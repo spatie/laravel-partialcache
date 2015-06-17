@@ -60,24 +60,30 @@ class PartialCache
      * @param  array $mergeData
      * @param  int $minutes
      * @param  string $key
+     * @param  string $tag
      * 
      * @return string
      */
-    public function cache($data, $view, $mergeData = null, $minutes = null, $key = null)
+    public function cache($data, $view, $mergeData = null, $minutes = null, $key = null, $tag = null)
     {
         $viewKey = $this->getCacheKeyForView($view, $key);
 
         $mergeData = $mergeData ?: [];
 
+        $tags = [$this->cacheKey];
+        if ($tag) {
+            $tags[] = $tag;
+        }
+
         if ($this->cacheIsTaggable && $minutes === null) {
             return $this->cache
-                ->tags($this->cacheKey)
+                ->tags($tags)
                 ->rememberForever($viewKey, $this->renderView($view, $data, $mergeData));
         }
 
         if ($this->cacheIsTaggable) {
             return $this->cache
-                ->tags($this->cacheKey)
+                ->tags($tags)
                 ->remember($viewKey, $minutes, $this->renderView($view, $data, $mergeData));
         }
 
@@ -127,10 +133,12 @@ class PartialCache
     }
 
     /**
-     * Empty the partial cache completely.
+     * Empty all views linked to a tag or the complete partial cache.
      * Note: Only supported by Taggable cache drivers.
-     * 
+     *
      * @param  string $tag
+     *
+     * @throws \Spatie\PartialCache\Exceptions\MethodNotSupportedException
      */
     public function flush($tag = null)
     {
@@ -139,7 +147,8 @@ class PartialCache
                 get_class($this->cacheManager->driver()) . ') doesn\'t support the flush method.');
         }
 
-        $this->cache->tags($this->cacheKey)->flush();
+        $tag = $tag ?: $this->cacheKey;
+        $this->cache->tags($tag)->flush();
     }
 
     /**
