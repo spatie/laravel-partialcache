@@ -7,6 +7,7 @@ use Illuminate\Contracts\Cache\Factory as CacheManager;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Contracts\View\Factory as View;
+use Spatie\PartialCache\Exceptions\MethodNotSupportedException;
 
 class PartialCache
 {
@@ -29,6 +30,11 @@ class PartialCache
      * @var string
      */
     protected $cacheKey;
+
+    /**
+     * @var bool
+     */
+    protected $cacheIsTaggable;
     
     /**
      * @param  \Illuminate\Contracts\View\Factory $view
@@ -42,7 +48,8 @@ class PartialCache
         $this->cache        = $cache;
         $this->cacheManager = $cacheManager;
 
-        $this->cacheKey     = $config->get('partialcache.key');
+        $this->cacheKey        = $config->get('partialcache.key');
+        $this->cacheIsTaggable = is_a($this->cacheManager->driver()->getStore(), TaggableStore::class);
     }
 
     /**
@@ -51,36 +58,36 @@ class PartialCache
      * @param  array $data
      * @param  string $view
      * @param  array $mergeData
-     * @param  string $key
      * @param  int $minutes
+     * @param  string $key
      * 
      * @return string
      */
-    public function cache($data, $view, $mergeData = [], $key = null, $minutes = null)
+    public function cache($data, $view, $mergeData = null, $minutes = null, $key = null)
     {
-        $key = $this->getKey($view, $key);
+        $viewKey = $this->getCacheKeyForView($view, $key);
 
-        $taggable = is_a($this->cacheManager->driver()->getStore(), TaggableStore::class);
+        $mergeData = $mergeData ?: [];
 
-        if ($taggable && $minutes === null) {
+        if ($this->cacheIsTaggable && $minutes === null) {
             return $this->cache
                 ->tags($this->cacheKey)
-                ->rememberForever($key, $this->renderView($view, $data, $mergeData));
+                ->rememberForever($viewKey, $this->renderView($view, $data, $mergeData));
         }
 
-        if ($taggable) {
+        if ($this->cacheIsTaggable) {
             return $this->cache
                 ->tags($this->cacheKey)
-                ->remember($key, $minutes, $this->renderView($view, $data, $mergeData));
+                ->remember($viewKey, $minutes, $this->renderView($view, $data, $mergeData));
         }
 
         if ($minutes === null) {
             return $this->cache
-                ->rememberForever($key, $this->renderView($view, $data, $mergeData));
+                ->rememberForever($viewKey, $this->renderView($view, $data, $mergeData));
         }
 
         return $this->cache
-            ->remember($key, $minutes, $this->renderView($view, $data, $mergeData));
+            ->remember($viewKey, $minutes, $this->renderView($view, $data, $mergeData));
     }
 
     /**
@@ -91,7 +98,7 @@ class PartialCache
      * 
      * @return string
      */
-    protected function getKey($view, $key)
+    public function getCacheKeyForView($view, $key = null)
     {
         $parts = [$this->cacheKey, $view];
 
@@ -100,6 +107,39 @@ class PartialCache
         }
 
         return implode('.', $parts);
+    }
+
+    /**
+     * Forget a rendered view.
+     * 
+     * @param  string $view
+     * @param  string $key
+     */
+    public function forget($view, $key = null)
+    {
+        $cacheKey = $this->getCacheKeyForView($view, $key);
+
+        if ($this->cacheIsTaggable) {
+            $this->cache->tags($this->cacheKey)->forget($cacheKey);
+        }
+
+        $this->cache->forget($cacheKey);
+    }
+
+    /**
+     * Empty the partial cache completely.
+     * Note: Only supported by Taggable cache drivers.
+     * 
+     * @param  string $tag
+     */
+    public function flush($tag = null)
+    {
+        if (!$this->cacheIsTaggable) {
+            throw new MethodNotSupportedException('The cache driver (' . 
+                get_class($this->cacheManager->driver()) . ') doesn\'t support the flush method.');
+        }
+
+        $this->cache->tags($this->cacheKey)->flush();
     }
 
     /**

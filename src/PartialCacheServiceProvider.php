@@ -13,7 +13,7 @@ class PartialCacheServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../resources/config/skeleton.php' => config_path('skeleton.php'),
+            __DIR__.'/../resources/config/partialcache.php' => config_path('partialcache.php'),
         ], 'config');
 
         $directive = config('partialcache.directive');
@@ -33,9 +33,9 @@ class PartialCacheServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__.'/../resources/config/config.php', 'skeleton');
+        $this->mergeConfigFrom(__DIR__.'/../resources/config/partialcache.php', 'partialcache');
 
-        $this->app->instance(PartialCache::class, new PartialCache());
+        $this->app->singleton(PartialCache::class, PartialCache::class);
         $this->app->alias(PartialCache::class, 'partialcache');
     }
 }
