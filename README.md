@@ -43,11 +43,43 @@ $ php artisan vendor:publish --provider="Spatie\PartialCache\PartialCacheService
 
 ## Usage
 
+The package registers a blade directive, `@cache`. The cache directive accepts the same arguments as `@include`, plus optional parameters for the amount of minutes a view should be cached for, a key unique to the rendered view, and a cache tag for the rendered view. If no minutes are provided, the view will be remembered until you manually remove it from the cache.
 
+Note that this caches the rendered html, not the rendered php like blade's default view caching.
+
+```
+{{-- Simple example --}}
+@cache('footer.section.partial')
+
+{{-- With extra view data --}}
+@cache('products.card', ['product' => $category->products->first()])
+
+{{-- For a certain time (cache will invalidate in 60 minutes in this example, set null to remember forever) --}}
+@cache('homepage.news', null, 60)
+
+{{-- With an added key (cache entry will be partialcache.user.profile.{$user->id}) --}}
+@cache('user.profile', null, null, $user->id)
+
+{{-- With an added tag (only supported by memcached and others) }}
+@cache('user.profile', null, null, $user->id, 'userprofiles')
+```
+
+### Clearing The Partialcache
+
+You can forget a partialcache entry with `PartialCache::forget($view, $key)`. 
+
+```php
+PartialCache::forget('user.profile', $user->id);
+```
+
+If you want to flush all entries, you'll need to either call `PartialCache::flush()` (note: this is only supported by drivers that support tags), or clear your entire cache.
 
 ### Configuration
 
+Configuration isn't necessary, but there are two options specified in the config file:
 
+- `partialcache.directive`: The name of the blade directive to register. Defaults to `cache`.
+- `partialcache.key`: The base key that used for cache entries. Defaults to `partialcache`.
 
 ## Change log
 
