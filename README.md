@@ -78,6 +78,7 @@ If you want to flush all entries, you'll need to either call `PartialCache::flus
 
 Configuration isn't necessary, but there are two options specified in the config file:
 
+- `partialcache.enabled`: Fully enable or disable the cache. Defaults to `true`.
 - `partialcache.directive`: The name of the blade directive to register. Defaults to `cache`.
 - `partialcache.key`: The base key that used for cache entries. Defaults to `partialcache`.
 
