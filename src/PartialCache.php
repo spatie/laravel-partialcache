@@ -35,6 +35,11 @@ class PartialCache
      * @var bool
      */
     protected $cacheIsTaggable;
+
+    /**
+     * @var bool
+     */
+    protected $enabled;
     
     /**
      * @param  \Illuminate\Contracts\View\Factory $view
@@ -50,6 +55,7 @@ class PartialCache
 
         $this->cacheKey        = $config->get('partialcache.key');
         $this->cacheIsTaggable = is_a($this->cacheManager->driver()->getStore(), TaggableStore::class);
+        $this->enabled         = $config->get('partialcache.enabled');
     }
 
     /**
@@ -66,6 +72,10 @@ class PartialCache
      */
     public function cache($data, $view, $mergeData = null, $minutes = null, $key = null, $tag = null)
     {
+        if (!$this->enabled) {
+            return call_user_func($this->renderView($view, $data, $mergeData));
+        }
+
         $viewKey = $this->getCacheKeyForView($view, $key);
 
         $mergeData = $mergeData ?: [];
@@ -162,6 +172,9 @@ class PartialCache
      */
     protected function renderView($view, $data, $mergeData)
     {
+        $data = $data ?: [];
+        $mergeData = $mergeData ?: [];
+        
         return function () use ($view, $data, $mergeData) {
             return $this->view->make($view, $data, $mergeData)->render();
         };
