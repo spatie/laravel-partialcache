@@ -64,6 +64,9 @@ Note that this caches the rendered html, not the rendered php like blade's defau
 
 {{-- With an added tag (only supported by memcached and others) }}
 @cache('user.profile', null, null, $user->id, 'userprofiles')
+
+{{-- With array of tags (only supported by memcached and others) }}
+@cache('user.profile', null, null, $user->id, ['user', 'profile', 'location'])
 ```
 
 ### Clearing The PartialCache
