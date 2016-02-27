@@ -20,7 +20,7 @@ class PartialCache
      * @var \Illuminate\Contracts\Cache\Repository
      */
     protected $cache;
-    
+
     /**
      * @var \Illuminate\Contracts\Cache\Factory
      */
@@ -40,7 +40,7 @@ class PartialCache
      * @var bool
      */
     protected $enabled;
-    
+
     /**
      * @param  \Illuminate\Contracts\View\Factory $view
      * @param  \Illuminate\Contracts\Cache\Repository $cache
@@ -60,14 +60,14 @@ class PartialCache
 
     /**
      * Cache a view. If minutes are null, the view is cached forever.
-     * 
+     *
      * @param  array $data
      * @param  string $view
      * @param  array $mergeData
      * @param  int $minutes
      * @param  string $key
-     * @param  string $tag
-     * 
+     * @param  string|array $tag
+     *
      * @return string
      */
     public function cache($data, $view, $mergeData = null, $minutes = null, $key = null, $tag = null)
@@ -82,7 +82,11 @@ class PartialCache
 
         $tags = [$this->cacheKey];
         if ($tag) {
-            $tags[] = $tag;
+            if (is_array($tag)) {
+                $tags = array_merge($tags, $tag);
+            } else {
+                $tags[] = $tag;
+            }
         }
 
         if ($this->cacheIsTaggable && $minutes === null) {
@@ -108,10 +112,10 @@ class PartialCache
 
     /**
      * Create a key name for the cached view.
-     * 
+     *
      * @param  string $view
      * @param  string $key
-     * 
+     *
      * @return string
      */
     public function getCacheKeyForView($view, $key = null)
@@ -127,7 +131,7 @@ class PartialCache
 
     /**
      * Forget a rendered view.
-     * 
+     *
      * @param  string $view
      * @param  string $key
      */
@@ -153,7 +157,7 @@ class PartialCache
     public function flush($tag = null)
     {
         if (!$this->cacheIsTaggable) {
-            throw new MethodNotSupportedException('The cache driver (' . 
+            throw new MethodNotSupportedException('The cache driver (' .
                 get_class($this->cacheManager->driver()) . ') doesn\'t support the flush method.');
         }
 
@@ -163,18 +167,18 @@ class PartialCache
 
     /**
      * Render a view.
-     * 
+     *
      * @param  string $view
      * @param  array $data
      * @param  array $mergeData
-     * 
+     *
      * @return string
      */
     protected function renderView($view, $data, $mergeData)
     {
         $data = $data ?: [];
         $mergeData = $mergeData ?: [];
-        
+
         return function () use ($view, $data, $mergeData) {
             return $this->view->make($view, $data, $mergeData)->render();
         };
