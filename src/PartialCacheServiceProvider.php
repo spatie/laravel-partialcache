@@ -18,7 +18,7 @@ class PartialCacheServiceProvider extends ServiceProvider
 
         $directive = config('partialcache.directive');
 
-        Blade::directive($directive, function($expression) {
+        Blade::directive($directive, function ($expression) {
             if (starts_with($expression, '(')) {
                 $expression = substr($expression, 1, -1);
             }
