@@ -72,7 +72,7 @@ class PartialCache
      */
     public function cache($data, $view, $mergeData = null, $minutes = null, $key = null, $tag = null)
     {
-        if (! $this->enabled) {
+        if (!$this->enabled) {
             return call_user_func($this->renderView($view, $data, $mergeData));
         }
 
@@ -83,7 +83,7 @@ class PartialCache
         $tags = [$this->cacheKey];
 
         if ($tag) {
-            if (! is_array($tag)) {
+            if (!is_array($tag)) {
                 $tag = [$tag];
             }
 
@@ -157,7 +157,7 @@ class PartialCache
      */
     public function flush($tag = null)
     {
-        if (! $this->cacheIsTaggable) {
+        if (!$this->cacheIsTaggable) {
             throw new MethodNotSupportedException('The cache driver ('.
                 get_class($this->cacheManager->driver()).') doesn\'t support the flush method.');
         }
