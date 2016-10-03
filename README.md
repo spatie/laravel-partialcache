@@ -6,7 +6,7 @@
 [![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-partialcache.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-partialcache)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-partialcache.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-partialcache)
 
-This package provides a Blade directive for Laravel 5.1 to cache rendered partials in laravel.
+This package provides a Blade directive for Laravel >=5.1 to cache rendered partials in Laravel.
 
 Spatie is a webdesign agency in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
@@ -18,19 +18,19 @@ You can install the package via Composer:
 $ composer require spatie/laravel-partialcache
 ```
 
-Start by registering the package's the service provider and facade:
+Start by registering the package's service provider and facade:
 
 ```php
 // config/app.php
 
 'providers' => [
   ...
-  'Spatie\PartialCache\PartialCacheServiceProvider',
+  Spatie\PartialCache\PartialCacheServiceProvider::class,
 ],
 
 'aliases' => [
   ...
-  'PartialCache' => 'Spatie\PartialCache\PartialCacheFacade',
+  'PartialCache' => Spatie\PartialCache\PartialCacheFacade::class,
 ],
 ```
 
@@ -79,7 +79,7 @@ Note that this caches the rendered html, not the rendered php like blade's defau
 
 ### Clearing The PartialCache
 
-You can forget a partialcache entry with `PartialCache::forget($view, $key)`. 
+You can forget a partialcache entry with `PartialCache::forget($view, $key)`.
 
 ```php
 PartialCache::forget('user.profile', $user->id);
