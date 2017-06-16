@@ -28,5 +28,15 @@
         "psr-4": {
             "Spatie\\PartialCache\\": "src"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Spatie\\PartialCache\\PartialCacheServiceProvider"
+            ],
+            "aliases": {
+                "PartialCache": "Spatie\\PartialCache\\PartialCacheFacade"
+            }
+        }
     }
 }
