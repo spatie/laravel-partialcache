@@ -2,6 +2,9 @@
 
 All Notable changes to `spatie/laravel-partialcache` will be documented in this file
 
+## 1.2.2 - 2018-02-13
+- Add autoregister
+
 ## 1.2.1
 - Housekeeping
 
