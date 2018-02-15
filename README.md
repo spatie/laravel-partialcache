@@ -75,6 +75,15 @@ You can forget a partialcache entry with `PartialCache::forget($view, $key)`.
 ```php
 PartialCache::forget('user.profile', $user->id);
 ```
+If you have used @cache on an entry along with tags and your cache driver supports them (like memcached and other), you need to use the same tags to forget the entry.
+
+```php
+// With an added tag
+PartialCache::forget('user.profile', $user->id, 'userprofiles');
+
+// With array of tags
+PartialCache::forget('user.profile', $user->id, ['user', 'profile', 'location']);
+```
 
 If you want to flush all entries, you'll need to either call `PartialCache::flush()` (note: this is only supported by drivers that support tags), or clear your entire cache.
 
@@ -115,7 +124,7 @@ We publish all received postcards [on our company website](https://spatie.be/en/
 
 Spatie is a webdesign agency based in Antwerp, Belgium. You'll find an overview of all our open source projects [on our website](https://spatie.be/opensource).
 
-Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie). 
+Does your business depend on our contributions? Reach out and support us on [Patreon](https://www.patreon.com/spatie).
 All pledges will be dedicated to allocating workforce on maintenance and new awesome stuff.
 
 ## License

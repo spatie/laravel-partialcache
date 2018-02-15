@@ -80,15 +80,7 @@ class PartialCache
 
         $mergeData = $mergeData ?: [];
 
-        $tags = [$this->cacheKey];
-
-        if ($tag) {
-            if (!is_array($tag)) {
-                $tag = [$tag];
-            }
-
-            $tags = array_merge($tags, $tag);
-        }
+        $tags = $this->getTags($tag);
 
         if ($this->cacheIsTaggable && $minutes === null) {
             return $this->cache
@@ -135,13 +127,15 @@ class PartialCache
      *
      * @param string $view
      * @param string $key
+     * @param null|string|array $tag
      */
-    public function forget($view, $key = null)
+    public function forget($view, $key = null, $tag = null)
     {
         $cacheKey = $this->getCacheKeyForView($view, $key);
 
         if ($this->cacheIsTaggable) {
-            $this->cache->tags($this->cacheKey)->forget($cacheKey);
+            $tags = $this->getTags($tag);
+            $this->cache->tags($tags)->forget($cacheKey);
         }
 
         $this->cache->forget($cacheKey);
@@ -183,5 +177,27 @@ class PartialCache
         return function () use ($view, $data, $mergeData) {
             return $this->view->make($view, $data, $mergeData)->render();
         };
+    }
+
+    /**
+     * Constructs tag array
+     *
+     * @param null|string|array $tag
+     *
+     * @return array
+     */
+    protected function getTags($tag = null)
+    {
+        $tags = [$this->cacheKey];
+
+        if ($tag) {
+            if (!is_array($tag)) {
+                $tag = [$tag];
+            }
+
+            $tags = array_merge($tags, $tag);
+        }
+
+        return $tags;
     }
 }
