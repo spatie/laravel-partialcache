@@ -55,7 +55,7 @@ class PartialCache
 
         $this->cacheKey = $config->get('partialcache.key');
         $this->cacheIsTaggable = is_a($this->cacheManager->driver()->getStore(), TaggableStore::class);
-        $this->enabled = $config->get('partialcache.enabled');
+        $this->enabled = filter_var($config->get('partialcache.enabled'),FILTER_VALIDATE_BOOLEAN);
     }
 
     /**
