@@ -11,42 +11,24 @@ use Spatie\PartialCache\Exceptions\MethodNotSupportedException;
 
 class PartialCache
 {
-    /**
-     * @var \Illuminate\Contracts\View\Factory
-     */
+    /** @var \Illuminate\Contracts\View\Factory */
     protected $view;
 
-    /**
-     * @var \Illuminate\Contracts\Cache\Repository
-     */
+    /** @var \Illuminate\Contracts\Cache\Repository */
     protected $cache;
 
-    /**
-     * @var \Illuminate\Contracts\Cache\Factory
-     */
+    /** @var \Illuminate\Contracts\Cache\Factory */
     protected $cacheManager;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $cacheKey;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $cacheIsTaggable;
 
-    /**
-     * @var bool
-     */
+    /** @var bool */
     protected $enabled;
 
-    /**
-     * @param \Illuminate\Contracts\View\Factory      $view
-     * @param \Illuminate\Contracts\Cache\Repository  $cache
-     * @param \Illuminate\Contracts\Cache\Factory     $cacheManager
-     * @param \Illuminate\Contracts\Config\Repository $config
-     */
     public function __construct(View $view, Cache $cache, CacheManager $cacheManager, Config $config)
     {
         $this->view = $view;
