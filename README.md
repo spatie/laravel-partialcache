@@ -94,6 +94,7 @@ Configuration isn't necessary, but there are three options specified in the conf
 - `partialcache.enabled`: Fully enable or disable the cache. Defaults to `true`.
 - `partialcache.directive`: The name of the blade directive to register. Defaults to `cache`.
 - `partialcache.key`: The base key that used for cache entries. Defaults to `partialcache`.
+- `partialcache.duration`: The default cache duration in minutes, set `null` to remember forever. Defaults to `null`.
 
 ## Change log
 
