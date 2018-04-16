@@ -12,6 +12,6 @@ return [
     'key' => 'partialcache',
 
     // The default cache duration in minutes, set null to remember forever 
-    'duration' => null
+    'default_duration' => null
 
 ];
