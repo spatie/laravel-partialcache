@@ -1,6 +1,10 @@
 # Changelog
 
-All Notable changes to `spatie/laravel-partialcache` will be documented in this file
+All notable changes to `spatie/laravel-partialcache` will be documented in this file
+
+## 1.3.0 - 2018-04-16
+
+- add `default_duration` to config file
 
 ## 1.2.3 - 2018-02-15
 - add support for forgetting using tags
