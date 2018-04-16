@@ -29,6 +29,9 @@ class PartialCache
     /** @var bool */
     protected $enabled;
 
+    /** @var int|null */
+    protected $duration;
+
     public function __construct(View $view, Cache $cache, CacheManager $cacheManager, Config $config)
     {
         $this->view = $view;
@@ -38,6 +41,7 @@ class PartialCache
         $this->cacheKey = $config->get('partialcache.key');
         $this->cacheIsTaggable = is_a($this->cacheManager->driver()->getStore(), TaggableStore::class);
         $this->enabled = $this->determineEnabled($config);
+        $this->duration = $config->get('partialcache.default_duration');
     }
 
     /**
@@ -63,6 +67,8 @@ class PartialCache
         $mergeData = $mergeData ?: [];
 
         $tags = $this->getTags($tag);
+
+        $minutes = $this->resolveCacheDuration($minutes);
 
         if ($this->cacheIsTaggable && $minutes === null) {
             return $this->cache
@@ -195,5 +201,20 @@ class PartialCache
         }
 
         return $configValue;
+    }
+
+    /**
+     * Resolve cache duration, defaults to the config if minutes is null
+     *
+     * @param int|null $minutes
+     * @return int|null
+     */
+    protected function resolveCacheDuration($minutes = null)
+    {
+        if (is_null($minutes)) {
+            return $this->duration;
+        }
+
+        return $minutes;
     }
 }
