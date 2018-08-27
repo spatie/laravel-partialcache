@@ -3,7 +3,6 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-partialcache.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-partialcache)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![SensioLabsInsight](https://img.shields.io/sensiolabs/i/a6720e85-6e6d-4f1e-aeb5-2933c3fc8603.svg?style=flat-square)](https://insight.sensiolabs.com/projects/a6720e85-6e6d-4f1e-aeb5-2933c3fc8603)
-[![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-partialcache.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-partialcache)
 [![StyleCI](https://styleci.io/repos/37589615/shield?branch=master)](https://styleci.io/repos/37589615)
 [![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-partialcache.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-partialcache)
 
