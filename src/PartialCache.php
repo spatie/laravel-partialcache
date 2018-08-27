@@ -113,8 +113,8 @@ class PartialCache
     /**
      * Forget a rendered view.
      *
-     * @param string $view
-     * @param string $key
+     * @param string            $view
+     * @param string            $key
      * @param null|string|array $tag
      */
     public function forget($view, $key = null, $tag = null)
@@ -168,7 +168,7 @@ class PartialCache
     }
 
     /**
-     * Constructs tag array
+     * Constructs tag array.
      *
      * @param null|string|array $tag
      *
@@ -193,20 +193,21 @@ class PartialCache
     {
         $configValue = $config->get('partialcache.enabled');
 
-        /**
+        /*
          * Previous versions of the package mistakenly used a string for the enabled setting.
          */
         if (is_string($config)) {
-            return filter_var($configValue,FILTER_VALIDATE_BOOLEAN);
+            return filter_var($configValue, FILTER_VALIDATE_BOOLEAN);
         }
 
         return $configValue;
     }
 
     /**
-     * Resolve cache duration, defaults to the config if minutes is null
+     * Resolve cache duration, defaults to the config if minutes is null.
      *
      * @param int|null $minutes
+     *
      * @return int|null
      */
     protected function resolveCacheDuration($minutes = null)
