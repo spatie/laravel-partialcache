@@ -3,10 +3,10 @@
 namespace Spatie\PartialCache;
 
 use Illuminate\Cache\TaggableStore;
-use Illuminate\Contracts\Cache\Factory as CacheManager;
+use Illuminate\Contracts\View\Factory as View;
 use Illuminate\Contracts\Cache\Repository as Cache;
 use Illuminate\Contracts\Config\Repository as Config;
-use Illuminate\Contracts\View\Factory as View;
+use Illuminate\Contracts\Cache\Factory as CacheManager;
 use Spatie\PartialCache\Exceptions\MethodNotSupportedException;
 
 class PartialCache
@@ -58,7 +58,7 @@ class PartialCache
      */
     public function cache($data, $view, $mergeData = null, $minutes = null, $key = null, $tag = null)
     {
-        if (!$this->enabled) {
+        if (! $this->enabled) {
             return call_user_func($this->renderView($view, $data, $mergeData));
         }
 
@@ -139,7 +139,7 @@ class PartialCache
      */
     public function flush($tag = null)
     {
-        if (!$this->cacheIsTaggable) {
+        if (! $this->cacheIsTaggable) {
             throw new MethodNotSupportedException('The cache driver ('.
                 get_class($this->cacheManager->driver()).') doesn\'t support the flush method.');
         }
@@ -168,7 +168,7 @@ class PartialCache
     }
 
     /**
-     * Constructs tag array
+     * Constructs tag array.
      *
      * @param null|string|array $tag
      *
@@ -179,7 +179,7 @@ class PartialCache
         $tags = [$this->cacheKey];
 
         if ($tag) {
-            if (!is_array($tag)) {
+            if (! is_array($tag)) {
                 $tag = [$tag];
             }
 
@@ -193,18 +193,18 @@ class PartialCache
     {
         $configValue = $config->get('partialcache.enabled');
 
-        /**
+        /*
          * Previous versions of the package mistakenly used a string for the enabled setting.
          */
         if (is_string($config)) {
-            return filter_var($configValue,FILTER_VALIDATE_BOOLEAN);
+            return filter_var($configValue, FILTER_VALIDATE_BOOLEAN);
         }
 
         return $configValue;
     }
 
     /**
-     * Resolve cache duration, defaults to the config if minutes is null
+     * Resolve cache duration, defaults to the config if minutes is null.
      *
      * @param int|null $minutes
      * @return int|null
